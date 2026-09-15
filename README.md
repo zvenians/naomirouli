@@ -2,6 +2,7 @@
 
 > An intimate, typography-led digital archive and visual tribute crafted with modern web standards.
 
+[![Status](https://img.shields.io/badge/Status-Personal_Creative_Project-success?style=flat-square)](#)
 [![Live Demo](https://img.shields.io/badge/Live_Site-naomirouli.web.app-black?style=flat-square&logo=google-chrome&logoColor=white)](https://naomirouli.web.app)
 [![Hosting](https://img.shields.io/badge/Hosting-Firebase-orange?style=flat-square&logo=firebase&logoColor=white)](https://firebase.google.com/)
 [![Stack](https://img.shields.io/badge/Stack-Vanilla_HTML5%20%2F%20CSS3%20%2F%20ES6+-blue?style=flat-square)](https://developer.mozilla.org/)
