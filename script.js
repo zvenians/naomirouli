@@ -42,10 +42,14 @@ if (openBtn && closeBtn && note) {
   openBtn.addEventListener('click', () => {
     openBtn.style.display = 'none';
     note.classList.add('open');
+    openBtn.setAttribute('aria-expanded', 'true');
+    closeBtn.focus();
   });
   
   closeBtn.addEventListener('click', () => {
     note.classList.remove('open');
     openBtn.style.display = 'inline-block';
+    openBtn.setAttribute('aria-expanded', 'false');
+    openBtn.focus();
   });
 }
