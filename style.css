@@ -304,3 +304,19 @@ body {
   
   .section { padding: 80px var(--pad-x); min-height: auto; }
 }
+
+/* Accessibility: visible keyboard focus and reduced-motion preference. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid #2997ff;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
