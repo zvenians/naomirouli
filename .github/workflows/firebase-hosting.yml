@@ -1,0 +1,57 @@
+name: Firebase Hosting — Naomi Rouli
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'style.css'
+      - 'script.js'
+      - 'assets/**'
+      - 'firebase.json'
+      - '.firebaserc'
+      - '.github/workflows/firebase-hosting.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-hosting-naomirouli-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Publish static site to Firebase Hosting
+    # Auto-deploy is opt-in: prevent an unconfigured secret from turning
+    # repository setup into a failed production release.
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.FIREBASE_DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out reviewed main branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Verify site structure and Firebase configuration
+        run: |
+          node --check script.js
+          node --test tests/static-site.test.mjs tests/firebase-hosting.test.mjs
+      - name: Require GitHub-held Firebase credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOMIROULI }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo '::error::Set repository Actions secret FIREBASE_SERVICE_ACCOUNT_NAOMIROULI before requesting a Firebase deployment.'
+            exit 1
+          fi
+      - name: Deploy only the Naomi Rouli Hosting site
+        uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOMIROULI }}
+          projectId: gmahk-galilea-archive
+          channelId: live
+          entryPoint: .
