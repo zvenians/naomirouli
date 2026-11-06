@@ -1,100 +1,145 @@
-# Naomi Rouli — Personal Editorial Website & Visual Tribute
+# Naomi Rouli
 
-> An intimate, typography-led digital archive and visual tribute crafted with modern web standards.
+**A nine-chapter editorial website built with photography, typography, and small, deliberate interactions.**
 
-[Live site](https://naomirouli.web.app)
+A personal story told through one scrolling document. Instead of a component framework or a generic portfolio template, the site uses semantic HTML, a restrained CSS system, and a small JavaScript layer for chapter tracking, gallery movement, and an interactive letter.
 
----
+[Visit the website](https://naomirouli.web.app) · [View source](https://github.com/zvenians/naomirouli)
 
-## 1. Overview & Concept
-
-**Naomi Rouli** is a bespoke personal editorial website and visual tribute. Designed around the aesthetic cadence of an indie print magazine or cinematic exhibition catalog, the site presents a nine-chapter narrative celebrating shared memories, personal milestones, and candid portraits.
-
-Rather than relying on generic modern single-page site templates or heavy client-side frameworks, the site emphasizes artisanal web typography, delicate motion, tactile grain texture, and intentional pacing.
+[![Static site checks](https://github.com/zvenians/naomirouli/actions/workflows/static-site.yml/badge.svg)](https://github.com/zvenians/naomirouli/actions/workflows/static-site.yml)
 
 ---
 
-## 2. Visual & Interaction Architecture
+## Concept
 
-The experience is structured across nine sequential scenes, each accompanied by dedicated chapter identifiers and typographic hierarchy:
+The project is organized like a short editorial publication. Each chapter changes the balance of photography and text while preserving a continuous reading experience. The content is personal; the technical work is in the page structure, image presentation, touch/keyboard behavior, and restrained motion.
 
-| Scene | Chapter Title | Concept & Composition |
-|:-----:|:--------------|:----------------------|
-| **`01`** | **Hero Opening** | High-priority hero portrait, delicate typography, and atmospheric ambient entrance. |
-| **`02`** | **A Name** | Polaroid-style frame (`fig. 02.01`) paired with editorial typography and introduction copy. |
-| **`03`** | **Her** | Character traits badge system (`kind heart`, `funny mind`, `beautiful soul`, `my peace`) and featured portrait. |
-| **`04`** | **Little Things** | Asymmetrical editorial grid highlighting quirky micro-moments and cherished habits. |
-| **`05`** | **Little Archive** | Horizontal momentum-based photo rail supporting touch swipe and desktop pointer drag. |
-| **`06`** | **How It Started** | Storytelling narrative detailing the retreat memory, bag mishap, and initial messages. |
-| **`07`** | **The Date** | Commemorative stamp celebrating the milestone date (`08.08.2023`). |
-| **`08`** | **Private Note** | Interactive letter overlay triggered by user action, featuring letter reveal and song pairing. |
-| **`09`** | **Ending & Credits** | Concluding sentiment, subtle copyright acknowledgment, and footer colophon. |
+The goal is not to reproduce a magazine template. It is to create a small publication with a clear beginning, a navigable middle, and a deliberate ending.
 
----
+## Reading sequence
 
-## 3. Technical Highlights
+| Chapter | Section | Presentation |
+| --- | --- | --- |
+| **01** | Opening | Full-width portrait and introductory headline |
+| **02** | A name | Paired typography and portrait |
+| **03** | Her | Short details and character portrait |
+| **04** | Little things | Editorial cards with images and captions |
+| **05** | Little archive | Horizontally browsable photo collection |
+| **06** | How it started | Narrative text and supporting imagery |
+| **07** | The date | Personal milestone presented as a graphic element |
+| **08** | Private note | On-demand letter panel and close control |
+| **09** | Closing | Final message and credits |
 
-- **IntersectionObserver Navigation:** Multi-threshold observer continuously recalculates the active section, driving the real-time sticky topbar chapter indicator (`01 / 09` through `09 / 09`) and lateral index sidebar without scroll jitter.
-- **Fluid Horizontal Rail Drag:** Custom Pointer Events implementation featuring `setPointerCapture`, delta acceleration, and responsive touch isolation for natural desktop and mobile gallery browsing.
-- **Letter interaction:** A letter panel that can be opened and closed from the page. Keyboard and focus behavior should be checked during review.
-- **Fine-Tuned Typography:** Pairings of **Instrument Serif** (display italics), **DM Mono** (editorial figures and technical metadata), and **DM Sans** (clean, readable prose).
-- **Tactile Grain Simulation:** Fixed, hardware-accelerated SVG noise overlay providing a film-like photographic atmosphere.
-- **Zero Framework Overhead:** Pure semantic HTML5, modular CSS custom properties, and lightweight vanilla ES6+ JavaScript. Page speed varies with device and network conditions.
-- **Optimized Assets:** High-resolution photography converted and compressed into modern `.webp` formats.
+The section labels are navigational content, not separate routes. The site is intentionally maintained as one document.
 
----
+## Interaction details
 
-## 4. Repository Structure
+### Chapter awareness
+
+An `IntersectionObserver` observes the page sections and updates the current chapter display when the reader progresses. This keeps the top-bar indicator linked to the document rather than a fixed animation timeline.
+
+### Photo archive
+
+The horizontal photo rail uses pointer events for desktop dragging. Touch interaction is handled through the browser's native input behavior; desktop drag handling avoids capturing touch pointers.
+
+### Letter panel
+
+The letter control opens a distinct note panel, moves keyboard focus to its close control, and restores focus when closed. The Escape key also closes the panel. These behaviors are covered by the browser smoke tests.
+
+### Motion and accessibility
+
+The CSS includes visible keyboard focus styles and honors `prefers-reduced-motion`. Secondary text on light sections uses deliberate contrast values. Reduced-motion support does not mean all possible combinations of devices and assistive technology have been certified.
+
+## Implementation
+
+```mermaid
+flowchart LR
+  Reader["Browser"] --> HTML["index.html · chapters"]
+  HTML --> CSS["style.css · type, layout, motion"]
+  HTML --> JS["script.js · observer and controls"]
+  HTML --> Photos["assets/photos · WebP images"]
+  Hosting["Firebase Hosting"] --> Reader
+```
+
+| Responsibility | Implementation |
+| --- | --- |
+| Structure | HTML5 sections, headings, images, controls |
+| Design | CSS custom properties, responsive layouts, editorial typography |
+| Interaction | Vanilla JavaScript, IntersectionObserver, Pointer Events |
+| Photography | Local `.webp` assets |
+| Hosting | Firebase Hosting |
+| Quality checks | Node.js static tests and Chromium smoke checks |
+
+No JavaScript framework, runtime database, or user account system is required to render this site.
+
+## Repository structure
 
 ```text
-naomirouli/
-├── .firebaserc                # Firebase project configuration
-├── firebase.json              # Firebase Hosting configuration & caching rules
-├── index.html                 # Semantic 9-scene HTML document
-├── style.css                  # Custom property design tokens, typography, & layouts
-├── script.js                  # IntersectionObserver, progress bar, & pointer drag handlers
-└── assets/
-    └── photos/                # Optimized .webp image assets and polaroid plates
+.
+├── index.html                     Nine editorial chapters
+├── style.css                      Color, typography, layout, responsive rules
+├── script.js                      Chapter observer, rail, and letter controls
+├── assets/photos/                 Image assets
+├── tests/
+│   ├── static-site.test.mjs       Structure, links, and local asset checks
+│   └── browser-smoke.mjs          Desktop/mobile keyboard behavior
+├── firebase.json                  Static hosting configuration
+└── .firebaserc                    Firebase project selection
 ```
 
----
+## Run locally
 
-## 5. Local Development
-
-To run or preview the project locally, any standard static web server can be used:
+A static server is enough to preview the experience:
 
 ```bash
-# Using python built-in server:
+git clone https://github.com/zvenians/naomirouli.git
+cd naomirouli
 python -m http.server 8000
-
-# Or using npx serve:
-npx serve .
 ```
 
-Open `http://localhost:8000` (or the displayed port) in your web browser.
+Open `http://localhost:8000`. Use an HTTP server rather than opening the file with a `file://` URL so resource paths behave consistently.
 
----
-
-## 6. Deployment
-
-The site is configured for continuous static deployment via **Firebase Hosting**:
+### Verification
 
 ```bash
-# 1. Install Firebase CLI (if not installed)
-npm install -g firebase-tools
+node --check script.js
+node --test tests/static-site.test.mjs
+```
 
-# 2. Authenticate
-firebase login
+The GitHub Actions workflow also runs a headless Chromium smoke test with Playwright on narrow and desktop viewports, verifying opening/closing the letter and keyboard focus behavior.
 
-# 3. Deploy to production
+For local browser verification:
+
+```bash
+npm install --no-save --no-package-lock playwright@1.62.1
+npx playwright install chromium
+node tests/browser-smoke.mjs
+```
+
+Node.js 24 is used by the current CI workflow. Use that version for consistent results.
+
+## Editing guidance
+
+- **Content changes:** update chapter text in `index.html`; maintain meaningful heading order and image descriptions.
+- **Image changes:** add or replace appropriately optimized photographs under `assets/photos/`; verify cropping on phones and larger displays.
+- **Layout changes:** prefer existing CSS variables and component classes over one-off inline overrides.
+- **Interaction changes:** preserve keyboard and touch input; run the browser smoke test after changing the rail or letter.
+- **Publication:** keep personal photographs and private text only with appropriate permission. Public repository access does not imply unrestricted reuse.
+
+## Hosting and release
+
+`firebase.json` serves the repository as a static site through the configured `naomirouli` Firebase Hosting site. An authorized maintainer may deploy with Firebase CLI, after review:
+
+```bash
 firebase deploy --only hosting
 ```
 
-Production deployment URL: **[https://naomirouli.web.app](https://naomirouli.web.app)**
+That command changes a live website; it is **not** part of ordinary testing. Publishing requires a deliberate release decision and the correct Firebase project selection.
+
+## Scope
+
+This is an editorial website, not a blogging platform or photo-sharing service. It does not provide accounts, uploads, analytics dashboards, or a content-management backend. Its value lies in a focused experience rather than feature volume.
 
 ---
 
-## 7. Copyright & Privacy Notice
-
-- The design layout, custom CSS architecture, and interaction scripts are made available for inspiration and educational review.
-- All personal photographs in `assets/photos/`, private notes, and editorial text are private property of the author and subject. All Rights Reserved.
+**Personal content and photographs remain subject to their respective owners' rights.** Source maintained by [@zvenians](https://github.com/zvenians).
