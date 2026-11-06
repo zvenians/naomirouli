@@ -2,10 +2,7 @@
 
 > An intimate, typography-led digital archive and visual tribute crafted with modern web standards.
 
-[![Status](https://img.shields.io/badge/Status-Personal_Creative_Project-success?style=flat-square)](#)
-[![Live Demo](https://img.shields.io/badge/Live_Site-naomirouli.web.app-black?style=flat-square&logo=google-chrome&logoColor=white)](https://naomirouli.web.app)
-[![Hosting](https://img.shields.io/badge/Hosting-Firebase-orange?style=flat-square&logo=firebase&logoColor=white)](https://firebase.google.com/)
-[![Stack](https://img.shields.io/badge/Stack-Vanilla_HTML5%20%2F%20CSS3%20%2F%20ES6+-blue?style=flat-square)](https://developer.mozilla.org/)
+[Live site](https://naomirouli.web.app)
 
 ---
 
@@ -39,10 +36,10 @@ The experience is structured across nine sequential scenes, each accompanied by 
 
 - **IntersectionObserver Navigation:** Multi-threshold observer continuously recalculates the active section, driving the real-time sticky topbar chapter indicator (`01 / 09` through `09 / 09`) and lateral index sidebar without scroll jitter.
 - **Fluid Horizontal Rail Drag:** Custom Pointer Events implementation featuring `setPointerCapture`, delta acceleration, and responsive touch isolation for natural desktop and mobile gallery browsing.
-- **Accessible Modal Management:** Interactive letter overlay with keyboard focus trapping and smooth CSS transition states.
+- **Letter interaction:** A letter panel that can be opened and closed from the page. Keyboard and focus behavior should be checked during review.
 - **Fine-Tuned Typography:** Pairings of **Instrument Serif** (display italics), **DM Mono** (editorial figures and technical metadata), and **DM Sans** (clean, readable prose).
 - **Tactile Grain Simulation:** Fixed, hardware-accelerated SVG noise overlay providing a film-like photographic atmosphere.
-- **Zero Framework Overhead:** Pure semantic HTML5, modular CSS custom properties, and lightweight vanilla ES6+ JavaScript. Loads in under 200ms on modern connections.
+- **Zero Framework Overhead:** Pure semantic HTML5, modular CSS custom properties, and lightweight vanilla ES6+ JavaScript. Page speed varies with device and network conditions.
 - **Optimized Assets:** High-resolution photography converted and compressed into modern `.webp` formats.
 
 ---
