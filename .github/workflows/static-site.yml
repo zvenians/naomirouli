@@ -1,0 +1,28 @@
+name: Static Site Checks
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Check static pages, links, and assets
+        run: node --test tests/static-site.test.mjs
+      - name: Install Chromium and browser test dependency
+        run: |
+          npm install --no-save --no-package-lock playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Verify desktop and mobile browser behavior
+        run: node tests/browser-smoke.mjs

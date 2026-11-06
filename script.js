@@ -1,51 +1,63 @@
 const sections = [...document.querySelectorAll('.section')];
-const page = document.querySelector('.nav-right');
+const pageIndicator = document.querySelector('.nav-right');
 
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const n = e.target.id;
-    if(n && page) page.textContent = `${n} / 09`;
-  });
+const sectionObserver = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting || !pageIndicator) continue;
+    pageIndicator.textContent = `${entry.target.id} / 09`;
+  }
 }, { threshold: 0.48 });
 
-sections.forEach(s => io.observe(s));
+sections.forEach((section) => sectionObserver.observe(section));
 
 const rail = document.querySelector('.archive-rail');
-let dragging = false, startX = 0, startScroll = 0;
 
 if (rail) {
-  rail.addEventListener('pointerdown', e => {
-    if (e.pointerType === 'touch') return;
-    dragging = true;
-    startX = e.clientX;
-    startScroll = rail.scrollLeft;
-    rail.setPointerCapture(e.pointerId);
+  let drag = null;
+
+  rail.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'touch' || event.button !== 0) return;
+    drag = { pointerId: event.pointerId, x: event.clientX, scrollLeft: rail.scrollLeft };
+    rail.setPointerCapture(event.pointerId);
   });
-  rail.addEventListener('pointermove', e => {
-    if (dragging) rail.scrollLeft = startScroll - (e.clientX - startX) * 1.15;
+
+  rail.addEventListener('pointermove', (event) => {
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    rail.scrollLeft = drag.scrollLeft - (event.clientX - drag.x) * 1.15;
   });
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(x => {
-    rail.addEventListener(x, e => {
-      dragging = false;
-      try { rail.releasePointerCapture(e.pointerId); } catch {}
-    });
-  });
+
+  const endDrag = (event) => {
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    if (rail.hasPointerCapture(event.pointerId)) {
+      rail.releasePointerCapture(event.pointerId);
+    }
+    drag = null;
+  };
+
+  rail.addEventListener('pointerup', endDrag);
+  rail.addEventListener('pointercancel', endDrag);
+  rail.addEventListener('lostpointercapture', () => { drag = null; });
 }
 
-const letterStage = document.getElementById('letterStage');
-const openBtn = document.getElementById('openLetter');
-const closeBtn = document.getElementById('closeLetter');
+const openButton = document.getElementById('openLetter');
+const closeButton = document.getElementById('closeLetter');
 const note = document.getElementById('note');
 
-if (openBtn && closeBtn && note) {
-  openBtn.addEventListener('click', () => {
-    openBtn.style.display = 'none';
-    note.classList.add('open');
-  });
-  
-  closeBtn.addEventListener('click', () => {
-    note.classList.remove('open');
-    openBtn.style.display = 'inline-block';
+if (openButton && closeButton && note) {
+  const setNoteOpen = (isOpen) => {
+    note.hidden = !isOpen;
+    note.classList.toggle('open', isOpen);
+    openButton.hidden = isOpen;
+    openButton.setAttribute('aria-expanded', String(isOpen));
+    (isOpen ? closeButton : openButton).focus();
+  };
+
+  openButton.addEventListener('click', () => setNoteOpen(true));
+  closeButton.addEventListener('click', () => setNoteOpen(false));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !note.hidden) {
+      setNoteOpen(false);
+    }
   });
 }
