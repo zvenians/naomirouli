@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 24
       - name: Check static pages, links, and assets
-        run: node --test tests/static-site.test.mjs
+        run: node --test tests/static-site.test.mjs tests/firebase-hosting.test.mjs
       - name: Install Chromium and browser test dependency
         run: |
           npm install --no-save --no-package-lock playwright@1.62.1
