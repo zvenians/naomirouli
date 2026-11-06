@@ -10,6 +10,13 @@ This is a small static site. Keep edits deliberate and preserve the reading expe
 - Describe actual behavior only. Avoid unsupported speed or accessibility claims.
 
 ## Review
+
+Run the repository's static-page checks before proposing changes:
+
+```sh
+node --test tests/static-site.test.mjs
+```
+
 ```sh
 node --check script.js
 python -m http.server 8000
