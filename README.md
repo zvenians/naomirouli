@@ -136,6 +136,21 @@ firebase deploy --only hosting
 
 That command changes a live website; it is **not** part of ordinary testing. Publishing requires a deliberate release decision and the correct Firebase project selection.
 
+### Browser-only GitHub Actions deployment
+
+The `.github/workflows/firebase-hosting.yml` workflow can publish this static site from **GitHub.com in a browser**. It does not require the ChatGPT desktop application or a Firebase ChatGPT plugin.
+
+**One-time authorization (repository owner):**
+
+1. In the Google Cloud Console, select project `gmahk-galilea-archive` and create a dedicated service account for Firebase Hosting deployment to site `naomirouli`. Use the minimum roles required by the [official Firebase Hosting GitHub Action setup](https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/docs/service-account.md).
+2. If your organization permits JSON service-account keys, create a key and add its **entire JSON contents directly in GitHub** under **Settings → Secrets and variables → Actions → New repository secret**, named `FIREBASE_SERVICE_ACCOUNT_NAOMIROULI`. Never paste keys into a chat, source file, pull request, or build log. If key creation is disabled, use a supported short-lived identity setup instead of weakening policy.
+3. Open **Actions → Firebase Hosting — Naomi Rouli → Run workflow → main**. This manually publishes the reviewed `main` to the Firebase Hosting **live** channel.
+4. For automatic releases on future changes to the site, optionally add an Actions **repository variable** `FIREBASE_DEPLOY_ENABLED` set to `true`. Until then, pushes skip the deployment job; manual workflow dispatch remains available.
+
+The workflow verifies the static site and configuration, checks for a configured secret, and deploys the existing `firebase.json` site `naomirouli` in project `gmahk-galilea-archive`. It does not affect the congregation's other Firebase Hosting sites. Check the Actions run and [`naomirouli.web.app`](https://naomirouli.web.app) after publication.
+
+Hosting ignores `tests/` and repository documentation so those files are not included in a new public Hosting release.
+
 ## Scope
 
 This is an editorial website, not a blogging platform or photo-sharing service. It does not provide accounts, uploads, analytics dashboards, or a content-management backend. Its value lies in a focused experience rather than feature volume.
