@@ -11,15 +11,19 @@ This is a small static site. Keep edits deliberate and preserve the reading expe
 
 ## Review
 
-Run the repository's static-page checks before proposing changes:
+Run the static checks and JavaScript syntax verification:
 
 ```sh
 node --test tests/static-site.test.mjs
+node --check script.js
 ```
+
+The CI workflow also runs Chromium smoke tests at mobile and desktop viewport sizes. To reproduce those checks locally, install the same Playwright version and browser first:
 
 ```sh
-node --check script.js
-python -m http.server 8000
+npm install --no-save --no-package-lock playwright@1.62.1
+npx playwright install chromium
+node tests/browser-smoke.mjs
 ```
 
-Inspect the site on phone and desktop widths, test interactions with keyboard and pointer, and record results in the pull request. The repository does not currently define an automated browser test suite.
+The browser suite checks page overflow, the note panel, keyboard focus and Escape behavior, and JavaScript errors. Review photographic permissions and actual devices separately; record any untested checks in the pull request.
