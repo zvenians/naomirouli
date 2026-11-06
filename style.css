@@ -148,8 +148,16 @@ body {
 
 .theme-light .subheadline,
 .theme-light .paragraph,
-.theme-light .eyebrow {
-  color: var(--text-gray);
+.theme-light .eyebrow,
+.theme-white .subheadline,
+.theme-white .paragraph,
+.theme-white .eyebrow {
+  color: #626268;
+}
+
+.theme-light .apple-link,
+.theme-white .apple-link {
+  color: #0757b7;
 }
 
 .theme-white {
