@@ -20,3 +20,9 @@ jobs:
           node-version: 24
       - name: Check static pages, links, and assets
         run: node --test tests/static-site.test.mjs
+      - name: Install Chromium and browser test dependency
+        run: |
+          npm install --no-save --no-package-lock playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Verify desktop and mobile browser behavior
+        run: node tests/browser-smoke.mjs
