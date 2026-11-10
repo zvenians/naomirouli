@@ -1,8 +1,6 @@
 # Naomi Rouli
 
-**A nine-chapter editorial website built with photography, typography, and small, deliberate interactions.**
-
-A personal story told through one scrolling document. Instead of a component framework or a generic portfolio template, the site uses semantic HTML, a restrained CSS system, and a small JavaScript layer for chapter tracking, gallery movement, and an interactive letter.
+A nine-chapter personal website shaped around photography, typography, and scroll-based storytelling. Semantic HTML, CSS, and a small JavaScript layer handle the reading sequence, photo archive, and interactive letter.
 
 [Visit the website](https://naomirouli.web.app) · [View source](https://github.com/zvenians/naomirouli)
 
@@ -14,7 +12,7 @@ A personal story told through one scrolling document. Instead of a component fra
 
 The project is organized like a short editorial publication. Each chapter changes the balance of photography and text while preserving a continuous reading experience. The content is personal; the technical work is in the page structure, image presentation, touch/keyboard behavior, and restrained motion.
 
-The goal is not to reproduce a magazine template. It is to create a small publication with a clear beginning, a navigable middle, and a deliberate ending.
+The chapter sequence gives the story a clear opening, gradual progression, and closing note.
 
 ## Reading sequence
 
@@ -138,7 +136,7 @@ That command changes a live website; it is **not** part of ordinary testing. Pub
 
 ### Browser-only GitHub Actions deployment
 
-The `.github/workflows/firebase-hosting.yml` workflow can publish this static site from **GitHub.com in a browser**. It does not require the ChatGPT desktop application or a Firebase ChatGPT plugin.
+The `.github/workflows/firebase-hosting.yml` workflow supports manual publishing through GitHub Actions, subject to repository permissions and deployment credentials.
 
 **One-time authorization (repository owner):**
 
@@ -153,7 +151,7 @@ Hosting ignores `tests/` and repository documentation so those files are not inc
 
 ## Scope
 
-This is an editorial website, not a blogging platform or photo-sharing service. It does not provide accounts, uploads, analytics dashboards, or a content-management backend. Its value lies in a focused experience rather than feature volume.
+The site has no accounts, uploads, or content-management backend. Content changes are made directly in the source files.
 
 ---
 
